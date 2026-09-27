@@ -1,0 +1,23 @@
+%%{init: {"theme": "base", "flowchart": {"curve": "basis", "nodeSpacing": 40, "rankSpacing": 70}, "themeVariables": {"fontSize": "16px", "lineColor": "#334155", "primaryTextColor": "#0f172a"}}}%%
+flowchart LR
+    U(["👤 User"]) --> UI["<b>Streamlit UI</b><br/>port 8501<br/><br/>chat · sessions · upload<br/>explainability · metrics"]
+    UI -- "HTTP / SSE" --> API["<b>FastAPI</b><br/>port 8080<br/><br/>/documents · /sessions<br/>/chat · /chat/stream<br/>/decisions · /metrics"]
+
+    API -- "upload" --> ING["<b>Ingestion</b><br/>load → clean → tag<br/>→ chunk → embed"]
+    API -- "chat" --> LG["<b>LangGraph orchestrator</b><br/>8 agents"]
+
+    ING -- "store chunks" --> CH[("<b>Chroma</b><br/>chunks + embeddings<br/>+ BM25 index")]
+    LG -- "search" --> CH
+    LG -- "prompts" --> LLM["<b>Groq LLM</b><br/>gpt-oss-120b / 20b"]
+    LG -- "read / save memory" --> PG[("<b>PostgreSQL</b><br/>+ pgvector<br/><br/>chat state · user facts<br/>sessions · turn records")]
+    API -- "sessions, metrics" --> PG
+    LG -. "traces" .-> LS["<b>LangSmith</b><br/>(optional)"]
+
+    classDef ui fill:#dbeafe,stroke:#2563eb,stroke-width:2px
+    classDef svc fill:#ede9fe,stroke:#7c3aed,stroke-width:2px
+    classDef store fill:#fef3c7,stroke:#d97706,stroke-width:2px
+    classDef ext fill:#dcfce7,stroke:#16a34a,stroke-width:2px
+    class U,UI ui
+    class API,ING,LG svc
+    class CH,PG store
+    class LLM,LS ext

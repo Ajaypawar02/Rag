@@ -1,0 +1,120 @@
+# Conversational RAG system - full stack.
+#
+#   docker compose up -d --build          # chroma, postgres, seed (one-shot), api, ui
+#   open http://localhost:8501            # Streamlit UI
+#   open http://localhost:8080/docs       # API (Swagger)
+#
+# Secrets (GROQ_API_KEY, LANGSMITH_API_KEY, ...) come from .env; service addresses
+# below override any localhost values in .env so containers reach each other.
+#
+#   chroma   - vector database (document chunks + embeddings)
+#   postgres - memory store (LangGraph checkpoints, long-term memory, sessions, metrics)
+#   seed     - indexes data/sample_docs into Chroma on first start, then exits
+#   api      - FastAPI + LangGraph agents
+#   ui       - Streamlit chat, explainability and metrics pages
+
+x-app: &app
+  build:
+    context: .
+    target: api
+  image: conversational-rag-api:latest
+  env_file:
+    - path: .env
+      required: false
+  environment:
+    CHROMA_MODE: http
+    CHROMA_HOST: chroma
+    CHROMA_PORT: "8000"
+    POSTGRES_URL: postgresql://rag:rag@postgres:5432/rag
+
+services:
+  chroma:
+    image: chromadb/chroma:1.5.9  # keep in step with the chromadb client in requirements-api.txt
+    ports:
+      - "8000:8000"
+    volumes:
+      - chroma_data:/data
+    environment:
+      - ANONYMIZED_TELEMETRY=FALSE
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c 'exec 3<>/dev/tcp/127.0.0.1/8000' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  postgres:
+    image: pgvector/pgvector:pg16  # Postgres 16 + pgvector for semantic long-term memory search
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: rag
+      POSTGRES_PASSWORD: rag
+      POSTGRES_DB: rag
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U rag -d rag"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  seed:
+    <<: *app
+    command: ["python", "-m", "scripts.seed_docs", "--if-empty"]
+    depends_on:
+      chroma:
+        condition: service_healthy
+    restart: "no"
+
+  api:
+    <<: *app
+    ports:
+      - "8080:8080"
+    volumes:
+      - uploads:/app/data/uploads
+    depends_on:
+      chroma:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      seed:
+        condition: service_completed_successfully
+    restart: unless-stopped
+
+  ui:
+    build:
+      context: .
+      target: ui
+    image: conversational-rag-ui:latest
+    ports:
+      - "8501:8501"
+    environment:
+      API_URL: http://api:8080
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # Optional web GUI for PostgreSQL: `docker compose --profile tools up -d pgadmin`
+  # then open http://localhost:5050 (password for the "rag" user: rag).
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    profiles: ["tools"]
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: "False"  # desktop mode: no pgAdmin login screen
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: "False"
+    volumes:
+      - ./docker/pgadmin/servers.json:/pgadmin4/servers.json:ro
+    depends_on:
+      - postgres
+
+volumes:
+  chroma_data:
+  postgres_data:
+  uploads:

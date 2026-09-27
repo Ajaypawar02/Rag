@@ -1,0 +1,15 @@
+%%{init: {"theme": "base", "themeVariables": {"fontSize": "16px", "lineColor": "#334155"}}}%%
+flowchart LR
+    A["📄 <b>Upload</b><br/>PDF · Markdown · HTML"] --> B["<b>Load & clean</b><br/>remove menus,<br/>site syntax"]
+    B --> C["<b>Tag metadata</b><br/>type · product · version<br/>sections · code"]
+    C --> D["<b>Chunk</b><br/>split by headings<br/>code kept whole"]
+    D --> E["<b>Embed</b><br/>MiniLM<br/>(runs locally)"]
+    E --> F[("<b>Chroma</b><br/>+ BM25 rebuilt")]
+    F --> G(["✅ Searchable<br/>immediately"])
+
+    classDef step fill:#ede9fe,stroke:#7c3aed,stroke-width:2px
+    classDef store fill:#fef3c7,stroke:#d97706,stroke-width:2px
+    classDef done fill:#dcfce7,stroke:#16a34a,stroke-width:2px
+    class A,B,C,D,E step
+    class F store
+    class G done

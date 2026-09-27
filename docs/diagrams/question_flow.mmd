@@ -1,0 +1,23 @@
+%%{init: {"theme": "base", "themeVariables": {"fontSize": "15px", "actorBkg": "#ede9fe", "actorBorder": "#7c3aed", "noteBkgColor": "#fef3c7", "noteBorderColor": "#d97706"}}}%%
+sequenceDiagram
+    autonumber
+    actor U as User
+    participant UI as Streamlit UI
+    participant API as FastAPI
+    participant G as LangGraph agents
+    participant PG as PostgreSQL
+    participant CH as Chroma + BM25
+    participant L as Groq LLM
+
+    U->>UI: types a question
+    UI->>API: POST /sessions/{id}/chat/stream
+    API->>G: run one turn (user_id, session_id)
+    G->>PG: load chat history + summary + user facts
+    G->>L: understand · rewrite · plan search
+    G->>CH: hybrid search (semantic + keyword)
+    CH-->>G: top 5 chunks
+    G->>L: write answer with citations
+    G-->>UI: stream answer tokens (via API)
+    G->>PG: save new state, user facts, turn record
+    API-->>UI: done: sources, intent, latency
+    UI-->>U: answer + sources

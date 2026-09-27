@@ -1,0 +1,194 @@
+[
+  {
+    "query": "How do I declare a dependency in FastAPI?",
+    "source": "fastapi_dependencies.md",
+    "expected_text": "Declare the dependency",
+    "type": "exact"
+  },
+  {
+    "query": "Depends with Annotated",
+    "source": "fastapi_dependencies.md",
+    "expected_text": "Annotated",
+    "type": "exact"
+  },
+  {
+    "query": "how to run the development server with fastapi dev",
+    "source": "fastapi_first_steps.md",
+    "expected_text": "fastapi dev",
+    "type": "exact"
+  },
+  {
+    "query": "what does the openapi.json schema contain",
+    "source": "fastapi_first_steps.md",
+    "expected_text": "openapi",
+    "type": "exact"
+  },
+  {
+    "query": "replace parse_obj with model_validate",
+    "source": "pydantic_v2_migration_guide.md",
+    "expected_text": "model_validate",
+    "type": "exact"
+  },
+  {
+    "query": "validator decorator renamed field_validator",
+    "source": "pydantic_v2_migration_guide.md",
+    "expected_text": "field_validator",
+    "type": "exact"
+  },
+  {
+    "query": "rolling back a deployment to a previous revision",
+    "source": "kubernetes_deployments.html",
+    "expected_text": "Rolling Back",
+    "type": "exact"
+  },
+  {
+    "query": "kubectl rollout status",
+    "source": "kubernetes_deployments.html",
+    "expected_text": "rollout status",
+    "type": "exact"
+  },
+  {
+    "query": "maxSurge and maxUnavailable",
+    "source": "kubernetes_deployments.html",
+    "expected_text": "maxSurge",
+    "type": "exact"
+  },
+  {
+    "query": "which index type supports geometric data and nearest neighbor",
+    "source": "postgresql_16_index_types.pdf",
+    "expected_text": "GiST",
+    "type": "exact"
+  },
+  {
+    "query": "BRIN block range index",
+    "source": "postgresql_16_index_types.pdf",
+    "expected_text": "BRIN",
+    "type": "exact"
+  },
+  {
+    "query": "new type parameter syntax for generic classes",
+    "source": "python_3_12_whats_new.pdf",
+    "expected_text": "PEP 695",
+    "type": "exact"
+  },
+  {
+    "query": "f-string improvements PEP 701",
+    "source": "python_3_12_whats_new.pdf",
+    "expected_text": "701",
+    "type": "exact"
+  },
+  {
+    "query": "sorted sets for leaderboards",
+    "source": "redis_data_types.html",
+    "expected_text": "orted set",
+    "type": "exact"
+  },
+  {
+    "query": "probabilistic data types like HyperLogLog",
+    "source": "redis_data_types.html",
+    "expected_text": "HyperLogLog",
+    "type": "exact"
+  },
+  {
+    "query": "checkpointer thread_id configuration",
+    "source": "langgraph_persistence.md",
+    "expected_text": "thread",
+    "type": "exact"
+  },
+  {
+    "query": "docker compose up and watch for file changes",
+    "source": "docker_compose_getting_started.md",
+    "expected_text": "watch",
+    "type": "exact"
+  },
+  {
+    "query": "define services in compose.yaml with redis",
+    "source": "docker_compose_getting_started.md",
+    "expected_text": "redis",
+    "type": "exact"
+  },
+  {
+    "query": "how can I undo a bad release in k8s",
+    "source": "kubernetes_deployments.html",
+    "expected_text": "rollout undo",
+    "type": "paraphrase"
+  },
+  {
+    "query": "share the same query parameters across several endpoints without repeating code",
+    "source": "fastapi_dependencies.md",
+    "expected_text": "common_parameters",
+    "type": "paraphrase"
+  },
+  {
+    "query": "turn a plain dict into a model instance in the new version",
+    "source": "pydantic_v2_migration_guide.md",
+    "expected_text": "model_validate",
+    "type": "paraphrase"
+  },
+  {
+    "query": "which postgres index should I use for full text search or arrays",
+    "source": "postgresql_16_index_types.pdf",
+    "expected_text": "GIN",
+    "type": "paraphrase"
+  },
+  {
+    "query": "count unique visitors approximately with little memory",
+    "source": "redis_data_types.html",
+    "expected_text": "HyperLogLog",
+    "type": "paraphrase"
+  },
+  {
+    "query": "run my web app together with its cache locally",
+    "source": "docker_compose_getting_started.md",
+    "expected_text": "redis",
+    "type": "paraphrase"
+  },
+  {
+    "query": "friendlier error messages in the latest python",
+    "source": "python_3_12_whats_new.pdf",
+    "expected_text": "rror message",
+    "type": "paraphrase"
+  },
+  {
+    "query": "where do I see the auto-generated interactive API docs",
+    "source": "fastapi_first_steps.md",
+    "expected_text": "/docs",
+    "type": "paraphrase"
+  },
+  {
+    "query": "remember things about a user across different conversations",
+    "source": "langgraph_persistence.md",
+    "expected_text": "store",
+    "type": "paraphrase"
+  },
+  {
+    "query": "make the app handle more traffic by adding pods",
+    "source": "kubernetes_deployments.html",
+    "expected_text": "kubectl scale",
+    "type": "paraphrase"
+  },
+  {
+    "query": "pause changes to a deployment while I edit it",
+    "source": "kubernetes_deployments.html",
+    "expected_text": "rollout pause",
+    "type": "paraphrase"
+  },
+  {
+    "query": "custom validation logic on a single field",
+    "source": "pydantic_v2_migration_guide.md",
+    "expected_text": "field_validator",
+    "type": "paraphrase"
+  },
+  {
+    "query": "export a model to a dictionary",
+    "source": "pydantic_v2_migration_guide.md",
+    "expected_text": "model_dump",
+    "type": "paraphrase"
+  },
+  {
+    "query": "resume a conversation where it left off after a crash",
+    "source": "langgraph_persistence.md",
+    "expected_text": "checkpoint",
+    "type": "paraphrase"
+  }
+]

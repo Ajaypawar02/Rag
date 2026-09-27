@@ -1,0 +1,4 @@
+# Streamlit UI (talks to the API over HTTP only).
+streamlit==1.64.0
+httpx==0.28.1
+pandas==3.0.6

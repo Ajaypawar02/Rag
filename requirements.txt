@@ -1,0 +1,8 @@
+# Everything for local development: API, UI and tests.
+# Docker images install only what they need (requirements-api.txt / ui/requirements.txt).
+-r requirements-api.txt
+-r ui/requirements.txt
+
+# Tests
+pytest==9.1.1
+pytest-cov==7.1.0

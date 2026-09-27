@@ -1,0 +1,32 @@
+%%{init: {"theme": "base", "flowchart": {"curve": "basis", "nodeSpacing": 25, "rankSpacing": 90}, "themeVariables": {"fontSize": "15px", "lineColor": "#334155"}}}%%
+flowchart LR
+    Q(["❓ <b>New question</b>"])
+
+    R1["💬 <b>READ: recent messages</b><br/>this session · last 6"]
+    R2["📝 <b>READ: summary</b><br/>older messages of this session"]
+    R3["🧠 <b>READ: user facts</b><br/>all sessions of this user<br/>5 most relevant"]
+
+    A["⚙️ <b>Agents answer</b><br/>understand · rewrite<br/>search · write answer"]
+
+    W1["💬 <b>WRITE: messages</b><br/>+ question + answer"]
+    W2["📝 <b>WRITE: summary</b><br/>only when chat > 10 messages<br/>(older ones folded in, then removed)"]
+    W3["🧠 <b>WRITE: user facts</b><br/>only new, lasting facts<br/>e.g. 'Uses Pydantic v2'"]
+    W4["📊 <b>WRITE: turn record</b><br/>transcript · sources<br/>decisions · latency"]
+
+    Q --> A
+    R1 --> A
+    R2 --> A
+    R3 --> A
+    A --> W1
+    A --> W2
+    A --> W3
+    A --> W4
+
+    classDef session fill:#dbeafe,stroke:#2563eb,stroke-width:2px
+    classDef user fill:#fce7f3,stroke:#db2777,stroke-width:2px
+    classDef app fill:#fef3c7,stroke:#d97706,stroke-width:2px
+    classDef core fill:#ede9fe,stroke:#7c3aed,stroke-width:2px
+    class R1,R2,W1,W2 session
+    class R3,W3 user
+    class W4 app
+    class A,Q core
